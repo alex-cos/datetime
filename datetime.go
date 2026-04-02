@@ -6,19 +6,19 @@ import (
 )
 
 const (
-	Day      = 24 * time.Hour
-	maxMonth = 11
+	Day            = 24 * time.Hour
+	lastMonthIndex = 11
 )
 
 func SimpleFormat(t time.Time) string {
 	return t.UTC().Format("2006-01-02 15:04:05")
 }
 
-func FormatRFC3339(t time.Time) string {
+func FormatISO8601Millis(t time.Time) string {
 	return t.UTC().Format("2006-01-02T15:04:05.000Z")
 }
 
-func ParseRFC3339(str string) (time.Time, error) {
+func ParseISO8601Millis(str string) (time.Time, error) {
 	t, err := time.Parse("2006-01-02T15:04:05.000Z", str)
 	if err != nil {
 		err = fmt.Errorf("failed to parse datetime '%s': %w", str, err)
@@ -26,7 +26,7 @@ func ParseRFC3339(str string) (time.Time, error) {
 	return t, err
 }
 
-// MidNightUTC returns the beining of day for the given date.
+// MidNightUTC returns the beginning of day for the given date.
 func MidNightUTC(date time.Time) time.Time {
 	return date.UTC().Truncate(Day)
 }
@@ -63,7 +63,7 @@ func NextMonth(t time.Time) time.Time {
 	year := d.Year()
 	month := (d.Month() - 1)
 	month++
-	if month > maxMonth {
+	if month > lastMonthIndex {
 		month -= 12
 		year++
 	}
@@ -100,7 +100,7 @@ func NextQuarter(t time.Time) time.Time {
 	month := (d.Month() - 1)
 	month -= month % 3
 	month += 3
-	if month > maxMonth {
+	if month > lastMonthIndex {
 		month -= 12
 		year++
 	}

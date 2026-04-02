@@ -11,32 +11,32 @@ import (
 func TestSimpleFormat(t *testing.T) {
 	t.Parallel()
 
-	date := time.Date(2020, time.February, 14, 12, 12, 12, 0, time.Local)
+	date := time.Date(2020, time.February, 14, 12, 12, 12, 0, time.FixedZone("Paris", 3600))
 	expected := "2020-02-14 11:12:12"
 	res := datetime.SimpleFormat(date)
 	assert.Equal(t, expected, res)
 }
 
-func TestFormatRFC3339(t *testing.T) {
+func TestFormatISO8601Millis(t *testing.T) {
 	t.Parallel()
 
 	date := time.Date(2020, time.February, 14, 12, 12, 12, 0, time.UTC)
 	expected := "2020-02-14T12:12:12.000Z"
-	res := datetime.FormatRFC3339(date)
+	res := datetime.FormatISO8601Millis(date)
 	assert.Equal(t, expected, res)
 }
 
-func TestParseRFC3339(t *testing.T) {
+func TestParseISO8601Millis(t *testing.T) {
 	t.Parallel()
 
 	date := "2020-02-14T12:12:12.000Z"
 	expected := time.Date(2020, time.February, 14, 12, 12, 12, 0, time.UTC)
-	res, err := datetime.ParseRFC3339(date)
+	res, err := datetime.ParseISO8601Millis(date)
 	assert.NoError(t, err)
 	assert.Equal(t, expected, res)
 
 	date = "2020-02-14 11:12:12"
-	_, err = datetime.ParseRFC3339(date)
+	_, err = datetime.ParseISO8601Millis(date)
 	assert.Error(t, err)
 }
 
